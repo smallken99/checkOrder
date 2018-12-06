@@ -12,11 +12,11 @@ import os
 
 def check():	
 	Browser = webdriver.Chrome()
-	o = open("蝦皮.txt","rt")
 	LoginUrl= 'https://seller.shopee.tw/portal/sale?type=toship'
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()
-	UserName = o.readlines()
+	with open("蝦皮.txt","rt") as o:
+		UserName = o.readlines()
 
 	content = "" #email內文
 	Browser.get(LoginUrl)
@@ -43,7 +43,8 @@ def check():
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)			
-			sleep(60)
+			sleep(10)
+			input("已經登入,繼續?")
 			cookies = Browser.get_cookies()
 			# 儲存cookies
 			f1 = open(fileName, 'w')
