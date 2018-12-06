@@ -11,17 +11,18 @@ import os
 
 
 def check():	
-	Browser = webdriver.Chrome()
-	LoginUrl= 'https://seller.shopee.tw/portal/sale?type=toship'
+
+	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()
 	with open("蝦皮.txt","rt") as o:
 		UserName = o.readlines()
 
-	content = "" #email內文
-	Browser.get(LoginUrl)
+	content = "" #email內文	
 
 	for username in UserName:
+		Browser = webdriver.Chrome()
+		Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
 		sleep(2)
 		username = username.strip()
 		fileName = username + '_cookie.txt'
@@ -34,28 +35,31 @@ def check():
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)
-			sleep(2)
+			sleep(5)
 			# 我的銷售
 			Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
-			sleep(40)
+			sleep(10)
+			try:
+				div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
+			except BaseException:
+				div = "沒有訂單"
+			print(div)
+			sleep(5)
+			content = content + "帳號: " + username + "\n\n"
+			content = content + '<html>' + div + '</html>\n\n'
+
 		else:
 			print(fileName,'cookie檔案不存在')
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
 			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)			
-			sleep(10)
-			input("已經登入,繼續?")
+			sleep(30)
 			cookies = Browser.get_cookies()
 			# 儲存cookies
 			f1 = open(fileName, 'w')
 			f1.write(json.dumps(cookies))
 			f1.close
-		content = content + "帳號: " + username + "\n\n"
- 
-
-
-
-
+		Browser.quit()
 		# try:
 		# 	tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table').get_attribute('outerHTML')
 		# except BaseException:
@@ -66,8 +70,8 @@ def check():
 
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
-
 	gmail.sendMail("訂單通知", content)
+	
 
 
 
