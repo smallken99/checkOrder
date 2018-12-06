@@ -1,9 +1,22 @@
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 def main():
-	sendMail('重要通知','你好,有一件重要的事請你處理')
+	sendMail('重要通知','''\
+<html>
+  <head></head>
+  <body>
+    <p>Salut! 
+    <p>Cela ressemble à un excellent
+        <a href="http://www.yummly.com/recipe/Roasted-Asparagus-Epicurious-203718">
+            recipie
+        </a>  
+    </p>    
+  </body>
+</html>
+''')
 
 	
 def sendMail(title,content):
@@ -13,16 +26,17 @@ def sendMail(title,content):
 	with open('gmail.txt','rt') as fi:
 		gmail_password = fi.readline()
 
-	msg = MIMEText(content)
+	msg = MIMEMultipart('alternative')
+	html_part = MIMEText(content,'html')
 	msg['Subject'] = title
 	msg['From'] = gmail_user
 	msg['To'] = 'smallken@gmail.com'
-
-	# server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-	# server.ehlo()
-	# server.login(gmail_user, gmail_password)
-	# server.send_message(msg)
-	# server.quit()
+	msg.attach(html_part)
+	server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+	server.ehlo()
+	server.login(gmail_user, gmail_password)
+	server.send_message(msg)
+	server.quit()
 
 	print('Email sent!:\n')
 	print('title:{}\n{}'.format(title,content))
