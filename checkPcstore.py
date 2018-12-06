@@ -9,8 +9,8 @@ import decimal
 
 
 def check():	
-	Browser = webdriver.Chrome()
-	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
+	# Browser = webdriver.Chrome()
+	Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	o = open("個人賣場.txt","rt")
 	LoginUrl= 'https://cadm.pcstore.com.tw/ords/ship.htm'
 	with open("pwd.txt",'rt') as ff:

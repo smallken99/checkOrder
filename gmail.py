@@ -1,6 +1,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import time
 
 
 def main():
@@ -21,7 +22,8 @@ def main():
 	
 def sendMail(title,content):
 	gmail_user = 's1059005@gmail.com'
-
+	str_time = time.strftime("%H:%M:%S")
+	title = title + " " + str_time
 	# 讀取gmail應用程式密碼
 	with open('gmail.txt','rt') as fi:
 		gmail_password = fi.readline()
