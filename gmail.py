@@ -29,11 +29,19 @@ def sendMail(title,content):
 		gmail_password = fi.readline()
 
 	msg = MIMEMultipart('alternative')
-	html_part = MIMEText(content,'html')
+
 	msg['Subject'] = title
 	msg['From'] = gmail_user
 	msg['To'] = 'smallken@gmail.com'
+	# 附加 html內文
+	html_part = MIMEText(content,'html')
 	msg.attach(html_part)
+
+	# 附加圖片
+	# with open(file, 'rb') as fp:
+	# 	img = MIMEImage(fp.read())
+	# msg.attach(img)		
+
 	server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 	server.ehlo()
 	server.login(gmail_user, gmail_password)

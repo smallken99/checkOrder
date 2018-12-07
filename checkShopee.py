@@ -39,6 +39,7 @@ def check():
 			# 我的銷售
 			Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
 			sleep(10)
+			Browser.save_screenshot(username + ".png")
 			try:
 				div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
 			except BaseException:

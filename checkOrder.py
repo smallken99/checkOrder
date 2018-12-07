@@ -2,7 +2,7 @@ import checkPcstore
 import checkShopee
 
 def main():
-	checkPcstore.check()
+	# checkPcstore.check()
 	checkShopee.check()
 
 
