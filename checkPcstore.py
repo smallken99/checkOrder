@@ -16,13 +16,12 @@ def check():
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()
 	UserName = o.readlines()
-	isSend = False
 	content = "" #email內文
 	Browser.get(LoginUrl)
 
 	for username in UserName:
 		sleep(2)
-		content = content + "帳號: " + username + "\n\n"
+		content = content + "<h1>帳號: " + username + "</h1>\n\n"
 		username = username.strip()
 		Browser.find_element_by_xpath('//*[@id="inpuid"]').clear()
 		Browser.find_element_by_xpath('//*[@id="inpuid"]').send_keys(username)
@@ -33,7 +32,6 @@ def check():
 		sleep(5)
 		try:
 			tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table').get_attribute('outerHTML')
-			isSend = True
 		except BaseException:
 			tbody = "沒有訂單"
 		
@@ -43,7 +41,6 @@ def check():
 		Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		Browser.get(LoginUrl)
 
-	if(isSend):
 		gmail.sendMail("訂單通知", content,[])
 
 

@@ -3,7 +3,7 @@ import checkShopee
 
 def main():
 	checkPcstore.check()
-	checkShopee.check()
+	# checkShopee.check()
 
 
 if __name__ == '__main__':
