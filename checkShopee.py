@@ -9,7 +9,6 @@ import json
 import os
 
 
-
 def check():	
 
 	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
@@ -19,7 +18,7 @@ def check():
 		UserName = o.readlines()
 
 	content = "" #email內文	
-
+	fileList = []
 	for username in UserName:
 		Browser = webdriver.Chrome()
 		Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
@@ -38,16 +37,18 @@ def check():
 			sleep(5)
 			# 我的銷售
 			Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
-			sleep(10)
+			sleep(5)
+			# Browser.maximize_window()
 			Browser.save_screenshot(username + ".png")
+			fileList.append(username + ".png")
 			try:
 				div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
 			except BaseException:
 				div = "沒有訂單"
 			print(div)
-			sleep(5)
-			content = content + "帳號: " + username + "\n\n"
-			content = content + '<html>' + div + '</html>\n\n'
+			sleep(2)
+			content = content + "<h1>帳號: " + username + "</h1>\n\n"
+			content = content +  div + '\n\n'
 
 		else:
 			print(fileName,'cookie檔案不存在')
@@ -71,7 +72,7 @@ def check():
 
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
-	gmail.sendMail("訂單通知", content)
+	gmail.sendMail("訂單通知", content, fileList)
 	
 
 
