@@ -41,7 +41,7 @@ def check():
 		Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		Browser.get(LoginUrl)
 
-		gmail.sendMail("訂單通知", content,[])
+	gmail.sendMail("訂單通知", content,[])
 
 
 if __name__ == '__main__':

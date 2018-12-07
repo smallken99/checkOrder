@@ -10,7 +10,7 @@ def main():
 <html>
   <head></head>
   <body>
-    <p>Salut! 
+    <p>Hello!
     <p>Cela ressemble  excellent
         <a href="http://www.yummly.com/recipe/Roasted-Asparagus-Epicurious-203718">
             recipie
@@ -30,7 +30,7 @@ def sendMail(title,content,files):
 
 	msg['Subject'] = title
 	msg['From'] = 'smallken@smallken.com'
-	msg['To'] = 'oioi7211@gmail.com, smallken@gmail.com'
+	msg['To'] = 'smallken@gmail.com,s1059005@gmail.com'
 	# 附加 html內文
 	html_part = MIMEText(content,'html')
 	msg.attach(html_part)
@@ -39,6 +39,7 @@ def sendMail(title,content,files):
 	for file in files:
 		with open(file, 'rb') as fp:
 			img = MIMEImage(fp.read())
+		img.add_header('Content-Disposition', "attachment; filename= %s" % file)
 		msg.attach(img)		
 
 	server = smtplib.SMTP('smallken.com')
