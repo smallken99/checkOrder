@@ -30,7 +30,7 @@ def sendMail(title,content,files):
 
 	msg['Subject'] = title
 	msg['From'] = 'smallken@smallken.com'
-	msg['To'] = 'smallken@gmail.com'
+	msg['To'] = 'oioi7211@gmail.com, smallken@gmail.com'
 	# 附加 html內文
 	html_part = MIMEText(content,'html')
 	msg.attach(html_part)
