@@ -88,7 +88,7 @@ def check():
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
 	if(isSend):
-		gmail.sendMail("訂單通知", content, fileList)
+		gmail.sendMail("shopee訂單通知", content, fileList)
 	
 
  

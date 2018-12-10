@@ -75,7 +75,7 @@ def check():
 			Browser.get(LoginUrl)
 
 	if(isSend):
-		gmail.sendMail("訂單通知", content,[])
+		gmail.sendMail("pc訂單通知", content,[])
 
 
 if __name__ == '__main__':
