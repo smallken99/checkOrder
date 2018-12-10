@@ -8,8 +8,7 @@ import decimal
 import json
 import os
 
-num = 0
-
+ 
 def check():	
 
 	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
@@ -17,12 +16,10 @@ def check():
 		UserPass= ff.readline()
 	with open("蝦皮.txt","rt") as o:
 		UserName = o.readlines()
-
+	isSend = False;
 	content = "" #email內文	
 	fileList = []
 	for username in UserName:
-		global num
-		num = 0
 		Browser = webdriver.Chrome()
 		Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
 		sleep(2)
@@ -56,10 +53,15 @@ def check():
 						div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
 					except BaseException:
 						div = "沒有訂單"
+			try:# 有找到 [產生寄件編號] 要寄mail通知
+				Browser.find_element_by_xpath("//div[contains(@class, 'shopee-button shopee-button--inactive shopee-button--primary ember-view')]").get_attribute('innerHTML')						
+				isSend = True
+			except BaseException:
+				pass
 			Browser.save_screenshot(username + ".png")
 			fileList.append(username + ".png")
 			print(div)
-			sleep(2)
+			sleep(10)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
 			content = content +  div + '\n\n'
 
@@ -85,7 +87,8 @@ def check():
 
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
-	# gmail.sendMail("訂單通知", content, fileList)
+	if(isSend):
+		gmail.sendMail("訂單通知", content, fileList)
 	
 
  
