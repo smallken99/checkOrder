@@ -74,7 +74,7 @@ def check():
 			sleep(2)
 			Browser.get(LoginUrl)
 
-	if(isSend):
+	if isSend:
 		gmail.sendMail("pc訂單通知", content,[])
 
 

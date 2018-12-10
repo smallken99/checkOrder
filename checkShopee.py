@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
-import xlsxwriter
 import decimal
 import json
 import os
@@ -87,7 +86,7 @@ def check():
 
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
-	if(isSend):
+	if isSend:
 		gmail.sendMail("shopee訂單通知", content, fileList)
 	
 
