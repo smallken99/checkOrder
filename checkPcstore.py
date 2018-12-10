@@ -3,10 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
-import xlsxwriter
 import decimal
 import os
 import json
+from bs4 import BeautifulSoup
 
 
 
@@ -36,13 +36,20 @@ def check():
 			sleep(10)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
 			try:
-				tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table').get_attribute('outerHTML')
-				isSend = True
+				tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table')
 			except BaseException:
 				tbody = "沒有訂單"
-			content = content + tbody + "\n\n"
+
+			# 以 Beautiful Soup 解析 HTML 程式碼,判斷要不要寄信
+			soup = BeautifulSoup(tbody.get_attribute('outerHTML'), 'html.parser')
+			select_tag = soup.find("select")
+			print("select tag:",select_tag)
+			if select_tag != None:
+				isSend = True			
+
+			content = content + tbody.get_attribute('outerHTML') + "\n\n"
 			Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
-			sleep(1)
+			sleep(2)
 			Browser.get(LoginUrl)
 		else:			
 			Browser.find_element_by_xpath('//*[@id="inpuid"]').clear()
@@ -66,7 +73,7 @@ def check():
 			Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 			sleep(2)
 			Browser.get(LoginUrl)
-			
+
 	if(isSend):
 		gmail.sendMail("訂單通知", content,[])
 
