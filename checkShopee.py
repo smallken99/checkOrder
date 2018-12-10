@@ -8,6 +8,7 @@ import decimal
 import json
 import os
 
+num = 0
 
 def check():	
 
@@ -20,6 +21,8 @@ def check():
 	content = "" #email內文	
 	fileList = []
 	for username in UserName:
+		global num
+		num = 0
 		Browser = webdriver.Chrome()
 		Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
 		sleep(2)
@@ -31,20 +34,30 @@ def check():
 			cookies = json.load(fi)
 			for cookie in cookies:
 				Browser.add_cookie(cookie)
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)
-			sleep(5)
+			# Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
+			# Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
+			# Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)
 			# 我的銷售
+			sleep(10)
 			Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
-			sleep(5)
-			# Browser.maximize_window()
-			Browser.save_screenshot(username + ".png")
-			fileList.append(username + ".png")
+			sleep(10)
 			try:
 				div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
+				# Browser.maximize_window()
 			except BaseException:
-				div = "沒有訂單"
+				Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
+				sleep(20)
+				try:
+					div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
+				except BaseException:
+					Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
+					sleep(40)
+					try:
+						div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
+					except BaseException:
+						div = "沒有訂單"
+			Browser.save_screenshot(username + ".png")
+			fileList.append(username + ".png")
 			print(div)
 			sleep(2)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
@@ -72,10 +85,10 @@ def check():
 
 		# Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
 		# Browser.get(LoginUrl)
-	gmail.sendMail("訂單通知", content, fileList)
+	# gmail.sendMail("訂單通知", content, fileList)
 	
 
-
+ 
 
 if __name__ == '__main__':
 	check()
