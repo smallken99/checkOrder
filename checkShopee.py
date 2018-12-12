@@ -8,7 +8,14 @@ import decimal
 import json
 import os
 
- 
+# 早上7點至8點一律通知
+def setTimeisSend():
+	int_time = int(time.strftime("%H%M"))
+	if int_time > 700 and int_time < 800:
+		return  True
+	else:
+		return False
+
 def check():	
 	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	with open("pwd.txt",'rt') as ff:
@@ -17,11 +24,7 @@ def check():
 		UserName = o.readlines()
 
 	# 早上7點至8點一律通知
-	int_time = int(time.strftime("%H%M"))
-	if int_time > 700 and int_time < 800:
-		isSend = True
-	else:
-		isSend = False
+	isSend = setTimeisSend()
 
 	content = "" #email內文	
 	fileList = []
@@ -95,9 +98,7 @@ def check():
 		# Browser.get(LoginUrl)
 	if isSend:
 		gmail.sendMail("shopee訂單通知", content, fileList)
-	
 
- 
 
 if __name__ == '__main__':
 	check()

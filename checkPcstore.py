@@ -10,6 +10,13 @@ import time
 from bs4 import BeautifulSoup
 
 
+def setTimeisSend():
+	# 早上7點至8點一律通知
+	int_time = int(time.strftime("%H%M"))
+	if int_time > 700 and int_time < 800:
+		return  True
+	else:
+		return False
 
 def check():	
 	# Browser = webdriver.Chrome()
@@ -23,11 +30,8 @@ def check():
 	Browser.get(LoginUrl)
 
 	# 早上7點至8點一律通知
-	int_time = int(time.strftime("%H%M"))
-	if int_time > 700 and int_time < 800:
-		isSend = True
-	else:
-		isSend = False
+	isSend = setTimeisSend()
+
 
 	for username in UserName:
 		sleep(2)
