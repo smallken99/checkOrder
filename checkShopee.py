@@ -2,6 +2,7 @@ import gmail
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+import time
 from time import sleep
 import decimal
 import json
@@ -9,13 +10,19 @@ import os
 
  
 def check():	
-
 	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()
 	with open("蝦皮.txt","rt") as o:
 		UserName = o.readlines()
-	isSend = False;
+
+	# 早上7點至8點一律通知
+	int_time = int(time.strftime("%H%M"))
+	if int_time > 700 and int_time < 800:
+		isSend = True
+	else:
+		isSend = False
+
 	content = "" #email內文	
 	fileList = []
 	for username in UserName:
@@ -36,7 +43,7 @@ def check():
 			# 我的銷售
 			sleep(10)
 			Browser.get('https://seller.shopee.tw/portal/sale?type=toship')
-			sleep(10)
+			sleep(20)
 			try:
 				div = Browser.find_element_by_xpath("//div[contains(@class, 'order-items toship')]").get_attribute('outerHTML')
 				# Browser.maximize_window()

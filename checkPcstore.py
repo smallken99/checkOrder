@@ -6,13 +6,14 @@ from time import sleep
 import decimal
 import os
 import json
+import time
 from bs4 import BeautifulSoup
 
 
 
 def check():	
-	Browser = webdriver.Chrome()
-	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
+	# Browser = webdriver.Chrome()
+	Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	o = open("個人賣場.txt","rt")
 	LoginUrl= 'https://cadm.pcstore.com.tw/ords/ship.htm'
 	with open("pwd.txt",'rt') as ff:
@@ -20,7 +21,13 @@ def check():
 	UserName = o.readlines()
 	content = "" #email內文
 	Browser.get(LoginUrl)
-	isSend = False
+
+	# 早上7點至8點一律通知
+	int_time = int(time.strftime("%H%M"))
+	if int_time > 700 and int_time < 800:
+		isSend = True
+	else:
+		isSend = False
 
 	for username in UserName:
 		sleep(2)
@@ -58,7 +65,7 @@ def check():
 			Browser.find_element_by_xpath('//*[@id="userpass"]').send_keys(Keys.ENTER)
 			sleep(5)
 			Browser.get("https://cadm.pcstore.com.tw/ords/ship.htm") # 出貨管理
-			sleep(10)
+			sleep(20)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
 			try:
 				tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table').get_attribute('outerHTML')
