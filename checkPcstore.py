@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 def check():	
 	# Browser = webdriver.Chrome()
 	Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
-	o = open("個人賣場.txt","rt")
+	o = open("pchome.txt","rt")
 	LoginUrl= 'https://cadm.pcstore.com.tw/ords/ship.htm'
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()

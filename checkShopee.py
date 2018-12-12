@@ -13,7 +13,7 @@ def check():
 	# Browser = webdriver.PhantomJS(executable_path=r'phantomjs-2.1.1-windows\bin\phantomjs.exe')
 	with open("pwd.txt",'rt') as ff:
 		UserPass= ff.readline()
-	with open("蝦皮.txt","rt") as o:
+	with open("shopee.txt","rt") as o:
 		UserName = o.readlines()
 
 	# 早上7點至8點一律通知
