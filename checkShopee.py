@@ -7,6 +7,7 @@ from time import sleep
 import decimal
 import json
 import os
+from bs4 import BeautifulSoup
 
 # 早上7點至8點一律通知
 def setTimeisSend():
@@ -69,7 +70,11 @@ def check():
 				pass
 			Browser.save_screenshot(username + ".png")
 			fileList.append(username + ".png")
+
+			# 拿掉大頭照片
+			div = deleteImg(div)
 			print(div)
+
 			sleep(10)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
 			content = content +  div + '\n\n'
@@ -99,6 +104,15 @@ def check():
 	if isSend:
 		gmail.sendMail("shopee訂單通知", content, fileList)
 
+
+def deleteImg(mainLine):
+	soup = BeautifulSoup(mainLine, "html.parser")
+	img_tags = soup.findAll("img")
+	for img in img_tags:
+		oldsrc = img.get('src')
+		newsrc = 'https://cdngarenanow-a.akamaihd.net/shopee/shopee-seller-live-tw/images/default-avatar.png'
+		mainLine = mainLine.replace(oldsrc, newsrc)	
+	return mainLine
 
 if __name__ == '__main__':
 	check()
