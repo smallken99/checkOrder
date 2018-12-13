@@ -71,8 +71,8 @@ def check():
 			Browser.save_screenshot(username + ".png")
 			fileList.append(username + ".png")
 
-			# 拿掉大頭照片
-			div = deleteImg(div)
+			# 換預設的大頭照
+			div = changeImg(div)
 			print(div)
 
 			sleep(10)
@@ -104,8 +104,8 @@ def check():
 	if isSend:
 		gmail.sendMail("shopee訂單通知", content, fileList)
 
-
-def deleteImg(mainLine):
+# 換預設的大頭照
+def changeImg(mainLine):
 	soup = BeautifulSoup(mainLine, "html.parser")
 	img_tags = soup.findAll("img")
 	for img in img_tags:
@@ -113,6 +113,14 @@ def deleteImg(mainLine):
 		newsrc = 'https://cdngarenanow-a.akamaihd.net/shopee/shopee-seller-live-tw/images/default-avatar.png'
 		mainLine = mainLine.replace(oldsrc, newsrc)	
 	return mainLine
+
+# 拿掉大頭照
+def deleteImg(mainLine):
+	soup = BeautifulSoup(mainLine, "html.parser")
+	img_tags = soup.findAll("img")
+	for img in img_tags:
+		img.decompose()
+	return soup.prettify()
 
 if __name__ == '__main__':
 	check()
