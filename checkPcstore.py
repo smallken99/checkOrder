@@ -9,7 +9,6 @@ import json
 import time
 from bs4 import BeautifulSoup
 
-
 def setTimeisSend():
 	# 早上7點至8點一律通知
 	int_time = int(time.strftime("%H%M"))
@@ -41,6 +40,7 @@ def check():
 			print(fileName,'cookie檔案存在')
 			fi = open(fileName, 'rt')
 			cookies = json.load(fi)
+			
 			for cookie in cookies:
 				Browser.add_cookie(cookie)
 			Browser.get("https://cadm.pcstore.com.tw/ords/ship.htm") # 出貨管理
@@ -50,13 +50,15 @@ def check():
 				tbody = Browser.find_element_by_xpath('//*[@id="d_IN"]/table').get_attribute('outerHTML')
 			except BaseException:
 				tbody = "沒有訂單"
-
 			# 以 Beautiful Soup 解析 HTML 程式碼,判斷要不要寄信
 			soup = BeautifulSoup(tbody, 'html.parser')
-			select_tag = soup.find("select")
-			print("select tag:",select_tag)
-			if select_tag != None:
-				isSend = True			
+			tr_tag = soup.select("tr")
+			for tr in tr_tag:
+				text = BeautifulSoup(str(tr), 'html.parser').select_one("td:nth-of-type(8)")
+				if text != None:
+					if str(text.string).strip() == '':
+						isSend = True
+	
 
 			content = content + tbody + "\n\n"
 			Browser.get("https://paystore.pcstore.com.tw/adm/logout.htm") # 登出
