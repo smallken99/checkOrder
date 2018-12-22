@@ -74,9 +74,7 @@ def check():
 
 			# 換預設的大頭照
 			div = changeImg(div)
-			print(div)
-
-			sleep(10)
+			sleep(1)
 			content = content + "<h1>帳號: " + username + "</h1>\n\n"
 			content = content +  div + '\n\n'
 
