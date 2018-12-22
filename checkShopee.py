@@ -68,6 +68,7 @@ def check():
 				isSend = True
 			except BaseException:
 				pass
+			Browser.maximize_window()
 			Browser.save_screenshot(username + ".png")
 			fileList.append(username + ".png")
 
@@ -81,9 +82,10 @@ def check():
 
 		else:
 			print(fileName,'cookie檔案不存在')
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
-			Browser.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)			
+			                               
+			Browser.find_element_by_xpath('//*[@id="app"]/div[2]/div/div/div[4]/div/div/div/div[2]/div[1]/div/input').send_keys(username)
+			Browser.find_element_by_xpath('//*[@id="app"]/div[2]/div/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(UserPass)
+			Browser.find_element_by_xpath('//*[@id="app"]/div[2]/div/div/div[4]/div/div/div/div[2]/div[2]/div/input').send_keys(Keys.ENTER)			
 			sleep(30)
 			cookies = Browser.get_cookies()
 			# 儲存cookies
@@ -124,3 +126,4 @@ def deleteImg(mainLine):
 
 if __name__ == '__main__':
 	check()
+	
